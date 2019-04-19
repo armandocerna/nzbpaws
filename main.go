@@ -38,16 +38,22 @@ func main() {
 		if err != nil {
 			log.Fatalf("Failed to determine disk space: %v\n", err)
 		}
-		if s < (*pauseThreshold * 1024) && !paused {
+		if s < (*pauseThreshold) && !paused {
+			fmt.Printf("Pausing Downloads: current free disk space is: %v GB. Threshold to pause (%v GB) reached.\n", s, *pauseThreshold)
 			if resp, err = nzbGet("pausedownload"); err != nil {
 				log.Fatalf("Error Pausing Downloads: %v\n", err)
 			}
-		} else if s > (*unpauseThreshold * 1024) && paused {
+			paused = true
+			fmt.Println(resp)
+		} else if s > (*unpauseThreshold) && paused {
+			fmt.Printf("Resuming downloads: current free disk space is: %v GB. Threshold to unpause (%v GB) reached.\n", s, *unpauseThreshold)
 			if resp, err = nzbGet("resumedownload"); err != nil {
 				log.Fatalf("Error Pausing Downloads: %v\n", err)
 			}
+			paused = false
+			fmt.Println(resp)
 		}
-		fmt.Println(resp)
+		fmt.Printf("Nothing to see here, current free disk space is: %v GB. Threshold to pause (%v GB) has not been reached.\n", s, *pauseThreshold)
 		time.Sleep(time.Second * 60)
 	}
 
