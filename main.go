@@ -53,7 +53,11 @@ func main() {
 			paused = false
 			fmt.Println(resp)
 		}
-		fmt.Printf("Nothing to see here, current free disk space is: %v GB. Threshold to pause (%v GB) has not been reached.\n", s, *pauseThreshold)
+		if paused {
+			fmt.Printf("Downloads Paused, current free disk space is: %v GB. Threshold to unpause (%v GB) has not been reached.\n", s, *unpauseThreshold)
+		} else {
+			fmt.Printf("Nothing to see here, current free disk space is: %v GB. Threshold to pause (%v GB) has not been reached.\n", s, *pauseThreshold)
+		}
 		time.Sleep(time.Second * 60)
 	}
 
