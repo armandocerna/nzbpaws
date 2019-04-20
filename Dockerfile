@@ -7,4 +7,4 @@ RUN cd /src && go build -o nzbpaws
 FROM alpine:latest
 WORKDIR /app
 COPY --from=build-env /src/nzbpaws /app/
-ENTRYPOINT ./nzbpaws
+ENTRYPOINT /app/nzbpaws
